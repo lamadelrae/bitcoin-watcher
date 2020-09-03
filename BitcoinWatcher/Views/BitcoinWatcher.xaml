@@ -7,8 +7,13 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <DataGrid HorizontalAlignment="Left" Height="282" Margin="10,127,0,0" VerticalAlignment="Top" Width="772"/>
-        <Button Content="Start" x:Name="Start" HorizontalAlignment="Left" Margin="707,102,0,0" VerticalAlignment="Top" Width="75" Click="Start_Click"/>
+        <DataGrid x:Name="BitcoinDataGrid" HorizontalAlignment="Left" Height="326" Margin="10,83,0,0" VerticalAlignment="Top" Width="772">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Time" Binding="{Binding Time.Updated}" />
+                <DataGridTextColumn Header="USD PRICE" Binding="{Binding Bpi.Eur.Rate}" />
+            </DataGrid.Columns>
+            </DataGrid>
+        <Button Content="Start" x:Name="Start" HorizontalAlignment="Left" Margin="707,58,0,0" VerticalAlignment="Top" Width="75" Click="Start_Click"/>
 
     </Grid>
 </Window>

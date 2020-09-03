@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -13,6 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using BitcoinWatcher.Controllers;
+using BitcoinWatcher.Models;
 
 namespace BitcoinWatcher
 {
@@ -21,16 +23,20 @@ namespace BitcoinWatcher
     /// </summary>
     public partial class MainWindow : Window
     {
+        public BitcoinWatcherController Controller = new BitcoinWatcherController();
+
         public MainWindow()
         {
             InitializeComponent();
+            
+            Dispatcher.BeginInvoke(new ThreadStart(() => BitcoinDataGrid.DataContext = Controller));
         }
 
-        private async void Start_Click(object sender, RoutedEventArgs e)
+        private void Start_Click(object sender, RoutedEventArgs e)
         {
-            var Controller = new BitcoinWatcherController();
+            Controller.Main = this;
 
-            await Controller.GetBitcoinPrice();
+            Controller.SetTimer();
         }
     }
 }

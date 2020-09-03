@@ -9,13 +9,17 @@ using System.Net.Http.Headers;
 using System.Net;
 using BitcoinWatcher.Models;
 using Newtonsoft.Json;
+using System.Windows;
+using System.Timers;
 
 namespace BitcoinWatcher.Controllers
 {
     public class BitcoinWatcherController
     {
+        Timer Timer { get; set; }
+        public MainWindow Main { get; set; }
 
-        public async Task<BitcoinModel> GetBitcoinPrice()
+        public async Task GetBitcoinPrice()
         {
             BitcoinModel Bitcoin = null;
 
@@ -32,13 +36,28 @@ namespace BitcoinWatcher.Controllers
                     Bitcoin = JsonConvert.DeserializeObject<BitcoinModel>(Json);
                 }
 
-                return Bitcoin;
+                Main.BitcoinDataGrid.Items.Add(Bitcoin);
             }
-            catch (Exception)
+            catch (Exception Exc)
             {
-                return Bitcoin;
-            }
+                MessageBox.Show($"An error occured : {Exc}");
 
+                return;
+            }
+        }
+
+        private void OnTimedEvent(Object source, ElapsedEventArgs e)
+        {
+            GetBitcoinPrice();
+        }
+
+        public void SetTimer()
+        {
+            Timer = new Timer(2000);
+
+            Timer.Elapsed += OnTimedEvent;
+            Timer.AutoReset = true;
+            Timer.Enabled = true;
         }
     }
 }
