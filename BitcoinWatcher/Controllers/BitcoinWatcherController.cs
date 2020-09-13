@@ -11,6 +11,7 @@ using BitcoinWatcher.Models;
 using Newtonsoft.Json;
 using System.Windows;
 using System.Timers;
+using System.Windows.Threading;
 
 namespace BitcoinWatcher.Controllers
 {
@@ -36,7 +37,11 @@ namespace BitcoinWatcher.Controllers
                     Bitcoin = JsonConvert.DeserializeObject<BitcoinModel>(Json);
                 }
 
-                Main.BitcoinDataGrid.Items.Add(Bitcoin);
+                Main.Dispatcher.Invoke(() =>
+                {
+                    Main.BitcoinDataGrid.Items.Add(Bitcoin);
+                });
+
             }
             catch (Exception Exc)
             {

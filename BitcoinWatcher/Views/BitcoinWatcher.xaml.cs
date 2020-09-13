@@ -28,8 +28,6 @@ namespace BitcoinWatcher
         public MainWindow()
         {
             InitializeComponent();
-            
-            Dispatcher.BeginInvoke(new ThreadStart(() => BitcoinDataGrid.DataContext = Controller));
         }
 
         private void Start_Click(object sender, RoutedEventArgs e)
