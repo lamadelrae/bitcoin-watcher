@@ -23,17 +23,17 @@ namespace BitcoinWatcher
     /// </summary>
     public partial class MainWindow : Window
     {
-        public BitcoinWatcherController Controller = new BitcoinWatcherController();
+        BitcoinWatcherController Controller { get; set; }
 
         public MainWindow()
         {
             InitializeComponent();
+
+            Controller = new BitcoinWatcherController(this);
         }
 
         private void Start_Click(object sender, RoutedEventArgs e)
         {
-            Controller.Main = this;
-
             Controller.SetTimer();
         }
     }

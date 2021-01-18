@@ -18,11 +18,17 @@ namespace BitcoinWatcher.Controllers
     public class BitcoinWatcherController
     {
         Timer Timer { get; set; }
-        public MainWindow Main { get; set; }
+
+        private MainWindow Main { get; set; }
+
+        public BitcoinWatcherController(MainWindow main)
+        {
+            Main = main;
+        }
 
         public async Task GetBitcoinPrice()
         {
-            BitcoinModel Bitcoin = null;
+            BitcoinModel bitcoinObj = null;
 
             try
             {
@@ -34,26 +40,26 @@ namespace BitcoinWatcher.Controllers
                 {
                     var Json = await response.Content.ReadAsStringAsync();
 
-                    Bitcoin = JsonConvert.DeserializeObject<BitcoinModel>(Json);
+                    bitcoinObj = JsonConvert.DeserializeObject<BitcoinModel>(Json);
                 }
 
                 Main.Dispatcher.Invoke(() =>
                 {
-                    Main.BitcoinDataGrid.Items.Add(Bitcoin);
+                    Main.BitcoinDataGrid.Items.Add(bitcoinObj);
                 });
 
             }
-            catch (Exception Exc)
+            catch (Exception ex)
             {
-                MessageBox.Show($"An error occured : {Exc}");
+                MessageBox.Show($"An error occured : {ex}");
 
                 return;
             }
         }
 
-        private void OnTimedEvent(Object source, ElapsedEventArgs e)
+        private async void OnTimedEvent(Object source, ElapsedEventArgs e)
         {
-            GetBitcoinPrice();
+            await GetBitcoinPrice();
         }
 
         public void SetTimer()
